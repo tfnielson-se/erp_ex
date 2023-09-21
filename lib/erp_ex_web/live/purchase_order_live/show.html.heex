@@ -1,0 +1,26 @@
+<.header>
+  Purchase order <%= @purchase_order.id %>
+  <:subtitle>This is a purchase_order record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/purchase_orders/#{@purchase_order}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit purchase_order</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Notes"><%= @purchase_order.notes %></:item>
+</.list>
+
+<.back navigate={~p"/purchase_orders"}>Back to purchase_orders</.back>
+
+<.modal :if={@live_action == :edit} id="purchase_order-modal" show on_cancel={JS.patch(~p"/purchase_orders/#{@purchase_order}")}>
+  <.live_component
+    module={ErpExWeb.PurchaseOrderLive.FormComponent}
+    id={@purchase_order.id}
+    title={@page_title}
+    action={@live_action}
+    purchase_order={@purchase_order}
+    patch={~p"/purchase_orders/#{@purchase_order}"}
+  />
+</.modal>

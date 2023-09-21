@@ -1,0 +1,41 @@
+<.header>
+  Listing Purchase orders
+  <:actions>
+    <.link patch={~p"/purchase_orders/new"}>
+      <.button>New Purchase order</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="purchase_orders"
+  rows={@streams.purchase_orders}
+  row_click={fn {_id, purchase_order} -> JS.navigate(~p"/purchase_orders/#{purchase_order}") end}
+>
+  <:col :let={{_id, purchase_order}} label="Notes"><%= purchase_order.notes %></:col>
+  <:action :let={{_id, purchase_order}}>
+    <div class="sr-only">
+      <.link navigate={~p"/purchase_orders/#{purchase_order}"}>Show</.link>
+    </div>
+    <.link patch={~p"/purchase_orders/#{purchase_order}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, purchase_order}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: purchase_order.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="purchase_order-modal" show on_cancel={JS.patch(~p"/purchase_orders")}>
+  <.live_component
+    module={ErpExWeb.PurchaseOrderLive.FormComponent}
+    id={@purchase_order.id || :new}
+    title={@page_title}
+    action={@live_action}
+    purchase_order={@purchase_order}
+    patch={~p"/purchase_orders"}
+  />
+</.modal>
