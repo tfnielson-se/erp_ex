@@ -4,8 +4,6 @@ defmodule ErpExWeb.UserController do
   alias ErpEx.Account.User
 
   def index(conn, _params) do
-    user = Repo.get!(User, 1)
-
-    json(conn, %{user: user.first_name})
+    render(conn, :list_all, layout: false)
   end
 end

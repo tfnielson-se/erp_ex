@@ -8,6 +8,7 @@ defmodule ErpEx.Account.User do
 
   @required_fields [:first_name, :last_name, :email, :title, :password, :is_admin, :is_active]
 
+  @derive {Jason.Encoder, only: [:id, :first_name, :last_name, :email, :title, :password, :is_admin, :is_active]}
   schema "users" do
     field :first_name, :string
     field :last_name, :string

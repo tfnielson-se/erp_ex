@@ -2,7 +2,7 @@ defmodule ErpExWeb.Router do
   use ErpExWeb, :router
 
   pipeline :browser do
-    plug :accepts, ["html"]
+    plug :accepts, ["html", "json"]
     plug :fetch_session
     plug :fetch_live_flash
     plug :put_root_layout, html: {ErpExWeb.Layouts, :root}
@@ -20,7 +20,7 @@ defmodule ErpExWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
-    resources "/api/users", UserController, only: [:index, :show, :create]
+    get "/api/users", UserController, :index
 
     # Users
     live "/users", UserLive.Index, :index
